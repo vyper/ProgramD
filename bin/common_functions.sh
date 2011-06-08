@@ -177,9 +177,11 @@ function set_jvm_command()
 function check_jvm_version()
 {
   JVM_VERSION=`$JVM_COMMAND -version 2>&1 | grep version | cut -f 3 -d " " | sed -e 's/\"//g'`
-  case "$JVM_VERSION" in (1.5.*)
+  case "$JVM_VERSION" in 
+    1.5.*) ;;
+    1.6.*) ;;
     # Version is okay; no need to say anything.
-    ;; (*)
+    (*)
     echo Your JVM is apparently version $JVM_VERSION.
     echo This may not be compatible with our needs.
     echo Please install a JDK 5.0 compatible JVM.
