@@ -11,6 +11,8 @@ package org.aitools.programd.processor.aiml;
 
 import org.w3c.dom.Element;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.aitools.programd.Core;
@@ -46,6 +48,39 @@ public class DateProcessor extends AIMLProcessor
     @Override
     public String process(@SuppressWarnings("unused") Element element, @SuppressWarnings("unused") TemplateParser parser)
     {
-        return new Date().toString();
+    	String date = "";
+    	
+    	String format = element.getAttribute("format");
+    	if (!format.equals("")) {
+	    	// TODO: refactory
+	    	format = format
+	    		  .replaceAll("%a", "E")	// Abbreviated weekday name
+	    		  .replaceAll("%A", "EEEE")	// Full weekday name
+	    		  .replaceAll("%b", "MMM")	// Abbreviated month name
+	    		  .replaceAll("%B", "MMMM")	// Full month name
+	    		  							// TODO: %c Date and time representation appropriate for locale
+	    		  .replaceAll("%d", "dd")	// Day of month as decimal number (01 . 31)
+	    		  .replaceAll("%H", "HH")	// Hour in 24-hour format (00 . 23)
+	    		  .replaceAll("%I", "hh")	// Hour in 12-hour format (01 . 12)
+	    		  							// TODO: %j Day of year as decimal number (001 . 366)
+	    		  .replaceAll("%m", "MM")	// Month as decimal number (01 . 12)
+	    		  .replaceAll("%M", "mm")	// Minute as decimal number (00 . 59)
+	    		  							// TODO: %p Current locale.s A.M./P.M. indicator for 12-hour clock
+	    		  .replaceAll("%S", "ss")	// Second as decimal number (00 . 59)
+	    		  							// TODO: %U Week of year as decimal number, with Sunday as first day of week (00 . 53)
+	    		  							// TODO: %w Weekday as decimal number (0 . 6; Sunday is 0)
+	    		  							// TODO: %W Week of year as decimal number, with Monday as first day of week (00 . 53)
+	    		  							// TODO: %x Date representation for current locale
+	    		  							// TODO: %X Time representation for current locale
+	    		  .replaceAll("%y", "yy")	// Year without century, as decimal number (00 . 99)
+	    		  .replaceAll("%Y", "yyyy");// Year with century, as decimal number
+	    		  							// TODO: %Z Time-zone name or abbreviation; no characters if time zone is unknown
+	    									// TODO: %% Percent sign
+	    	Format formatter = new SimpleDateFormat(format);
+	    	date = formatter.format(new Date());
+    	} else {
+    		date = new Date().toString();
+    	}
+        return date;
     }
 }
